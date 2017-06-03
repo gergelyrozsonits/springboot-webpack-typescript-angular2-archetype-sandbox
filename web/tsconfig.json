@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "listEmittedFiles": true,
+    "baseUrl": ".",
+	"typeRoots": [
+      "node_modules/@types",
+	  "src/main/types"
+    ],
+    "types": [
+        "node",
+        "jasmine"
+    ],
+    "lib": [
+        "es2015",
+        "dom"
+    ],
+    "rootDir": ".",
+    "rootDirs": [
+        "src/main/ts",
+        "src/test/ts"
+    ],
+    "paths": {
+        "*": [
+            "src/main/ts/*",
+            "src/test/ts/*"
+        ]
+    },
+    "mapRoot": "/",
+    "sourceRoot": "/",
+    "outDir": "./target/generated-resources/"
+  },
+  "include":[
+    "src/main/ts/**/*.ts",
+    "src/test/ts/**/*.ts"
+  ]
+}

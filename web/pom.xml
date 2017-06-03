@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.pub4us</groupId>
+    <artifactId>springboot-grunt-typescript-angular2-archetype-sandbox</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>web</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <!-- Switches -->
+    <node.install.directory>target</node.install.directory>
+    <typescript.source.directory>src/main/ts</typescript.source.directory>
+    <typescript.test.directory>src/test/ts</typescript.test.directory>
+    <scss.source.directory>src/main/scss</scss.source.directory>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <id>install-node-and-npm</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <!-- Optional configuration which provides for running any npm command -->
+            <configuration>
+              <nodeVersion>v6.9.1</nodeVersion>
+              <npmVersion>4.5.0</npmVersion>
+              <installDirectory>${node.install.directory}</installDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-install</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install</arguments>
+              <installDirectory>${node.install.directory}</installDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-build</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <srcdir>${typescript.source.directory}</srcdir>
+              <arguments>run build:dev</arguments>
+              <triggerfiles>
+                <triggerfile>package.json</triggerfile>
+                <triggerfile>tsconfig.json</triggerfile>
+                <triggerfile>webpack.aot.config.js</triggerfile>
+                <triggerfile>webpack.jit.config.js</triggerfile>
+              </triggerfiles>
+              <failOnError>true</failOnError>
+              <installDirectory>${node.install.directory}</installDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <srcdir>${typescript.source.directory}</srcdir>
+              <arguments>run test</arguments>
+              <triggerfiles>
+                <triggerfile>package.json</triggerfile>
+                <triggerfile>tsconfig.json</triggerfile>
+                <triggerfile>webpack.aot.config.js</triggerfile>
+                <triggerfile>webpack.jit.config.js</triggerfile>
+              </triggerfiles>
+              <failOnError>true</failOnError>
+              <installDirectory>${node.install.directory}</installDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
