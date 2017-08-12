@@ -13,7 +13,12 @@ module.exports = {
         loader : 'html-loader'
     }, {
         test : /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        loader : 'file-loader',
+        use: [{
+            loader : 'file-loader',
+            options: {
+                context: path.join(process.cwd(), 'src', 'main', 'resources', 'static')
+            }
+        }]
     }, {
         test : /\.css$/,
         include : path.resolve(process.cwd(), 'src', 'main', 'ts'),

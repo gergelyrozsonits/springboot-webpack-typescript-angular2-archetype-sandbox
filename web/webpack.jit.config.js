@@ -18,5 +18,5 @@ module.exports = function(env) {
         stats: 'errors-only',
 
         devtool: 'source-map'
-      };
+    };
 }

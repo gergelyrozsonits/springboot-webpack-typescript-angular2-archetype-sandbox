@@ -28,6 +28,17 @@
   </properties>
 
   <build>
+    <resources>
+      <!-- Setup default resource directory -->
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+      </resource>
+      <!-- Add node modules to '/node_modules' -->
+      <resource>
+        <targetPath>${project.basedir}/target/classes/node_modules</targetPath>
+        <directory>${project.basedir}/node_modules</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -62,23 +73,23 @@
               <installDirectory>${node.install.directory}</installDirectory>
             </configuration>
           </execution>
+          <!-- https://github.com/eirslett/frontend-maven-plugin/issues/547 -->
           <execution>
-            <id>npm-build</id>
-            <phase>generate-resources</phase>
+            <id>webpack-build</id>
+            <phase>compile</phase>
             <goals>
-              <goal>npm</goal>
+              <goal>webpack</goal>
             </goals>
             <configuration>
-              <srcdir>${typescript.source.directory}</srcdir>
-              <arguments>run build:dev</arguments>
-              <triggerfiles>
+              <arguments>--bail --display-modules --config webpack.jit.config.js</arguments>
+              <installDirectory>${node.install.directory}</installDirectory>
+			  <triggerfiles>
                 <triggerfile>package.json</triggerfile>
                 <triggerfile>tsconfig.json</triggerfile>
                 <triggerfile>webpack.aot.config.js</triggerfile>
                 <triggerfile>webpack.jit.config.js</triggerfile>
               </triggerfiles>
-              <failOnError>true</failOnError>
-              <installDirectory>${node.install.directory}</installDirectory>
+			  <failOnError>true</failOnError>
             </configuration>
           </execution>
           <execution>

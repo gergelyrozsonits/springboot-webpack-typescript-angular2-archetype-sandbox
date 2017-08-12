@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitAny": true,
+	"noStrictGenericChecks": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

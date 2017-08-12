@@ -2,11 +2,17 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env) => {
     env = env || {};
     return [
         new webpack.ProgressPlugin(),
+        // Provider plugin to make jquery available (e.g. for Select2)
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        }),
         // Workaround for https://github.com/angular/angular/issues/11580
         new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)@angular/, path.join(process.cwd(), 'src', 'main', 'ts'), {}),
         // The NoEmitOnErrorsPlugin is responsible for skipping emitting phase in case of compilation error
@@ -30,12 +36,28 @@ module.exports = (env) => {
                 'ENV': JSON.stringify(env.ENV || 'development')
             }
         }),
+        // Copy assets and .ts files to static resource location
+        new CopyWebpackPlugin([
+            // WORKAROUND: Added to support dynamic image references
+            { from: path.join(process.cwd(), 'src', 'main', 'resources', 'static', 'assets'), to: path.join(process.cwd(), 'target', 'classes', 'static', 'assets') },
+            // Added to support sourcemaps
+            { from: path.join(process.cwd(), 'src', 'main', 'ts'), to: path.join(process.cwd(), 'target', 'classes', 'static', 'src', 'main', 'ts') },
+            { from: path.join(process.cwd(), 'src', 'main', 'scss'), to: path.join(process.cwd(), 'target', 'classes', 'static', 'src', 'main', 'scss') }
+            // 
+        ], {
+            // By default, we only copy modified files during
+            // a watch or webpack-dev-server build. Setting this
+            // to `true` copies all files.
+            copyUnmodified: false
+        }),
         // Uglifying '.js' files
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                // https://github.com/angular/angular/issues/10618
-                keep_fnames: true
-            }
-        })
+        // Please note: This should not be activated again in this form (further configuration needed) otherwise the sourcemap generation will be prevented
+//        new webpack.optimize.UglifyJsPlugin({
+//            sourceMap: true,
+//            mangle: {
+//                // https://github.com/angular/angular/issues/10618
+//                keep_fnames: true
+//            }
+//        }),
     ];
 }

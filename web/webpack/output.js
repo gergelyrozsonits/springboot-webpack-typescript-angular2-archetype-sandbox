@@ -5,6 +5,7 @@ module.exports = {
     filename : '[name].[hash].bundle.js',
     chunkFilename : '[chunkhash].[id].chunk.js',
     devtoolModuleFilenameTemplate : function(info) {
-        return info.resource.replace('./src', '');
+        // return info.resource.replace('./src/main/ts', '');
+        return info.resource.replace('webpack:///.', '');
     }
 };
